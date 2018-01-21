@@ -5,6 +5,7 @@ import (
 	"flag"
 	"github.com/gorilla/mux"
 	"encoding/json"
+	"strings"
 	"strconv"
 	"github.com/rs/cors"
 	"./storage"
@@ -174,13 +175,16 @@ func uploadHandler(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer f.Close()
-	io.Copy(f, file)
+	io.Copy(f, file)	
 	req.ParseForm()
 	
 	value, _ := db.GetLastEventId()
 	//crowdValue, _ := strconv.Atoi(req.Form["crowd"][0])
 	ev := models.Event{value + 1, req.Form["name"][0], req.Form["location"][0], req.Form["eventType"][0], 100, dbPath, make([]string, 0)}
 	db.AddEvent(&ev)
+	newAddr := strings.Split(req.RemoteAddr, ":")[0]
+	newAddr = "http://" + newAddr + ":8100"
+	http.Redirect(rw, req, newAddr + "/#/tab/event", 301)
 }
 
 func main() {
