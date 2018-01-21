@@ -14,10 +14,17 @@ import (
 	"os"
 	"fmt"
 	"bytes"
+	"math/rand"
+	"time"
 	"io"
 	"path/filepath"
 	"./models"
 )
+
+func random(min, max int) int {
+    rand.Seed(time.Now().Unix())
+    return rand.Intn(max - min) + min
+}
 
 func Upload(url, file string) (err error) {
     // Prepare a form that you will submit to that URL.
@@ -177,10 +184,10 @@ func uploadHandler(rw http.ResponseWriter, req *http.Request) {
 	defer f.Close()
 	io.Copy(f, file)	
 	req.ParseForm()
-	
+
 	value, _ := db.GetLastEventId()
 	//crowdValue, _ := strconv.Atoi(req.Form["crowd"][0])
-	ev := models.Event{value + 1, req.Form["name"][0], req.Form["location"][0], req.Form["eventType"][0], 100, dbPath, make([]string, 0)}
+	ev := models.Event{value + 1, req.Form["name"][0], req.Form["location"][0], req.Form["eventType"][0], random(120, 200), dbPath, make([]string, 0)}
 	db.AddEvent(&ev)
 	newAddr := strings.Split(req.RemoteAddr, ":")[0]
 	newAddr = "http://" + newAddr + ":8100"

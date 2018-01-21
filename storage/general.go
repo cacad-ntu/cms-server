@@ -11,7 +11,7 @@ var getSubLocationsByIdQuery string = "select name, capacity, occupied, density,
 var getLocationHistoriesByIdQuery = "select timestamp, value from LocationHistories where locationID = ? ORDER BY timestamp ASC"
 
 
-var listAllEventsQuery string = "select * from Events"
+var listAllEventsQuery string = "select * from Events ORDER BY eventID DESC"
 var getEventByIdQuery string = "select * from Events where eventID = ?"
 var getLastEventIdQuery string = "select max(eventID) from Events"
 var addEventQuery string = "INSERT INTO Events (eventID, name, location, eventType, crowd, image) VALUES (:eventID, :name, :location, :eventType, :crowd, :image)"
