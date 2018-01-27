@@ -3,15 +3,15 @@ This is the server side implementation of Crowd Management System. Client side c
 
 ## Getting Started
 
-### Requirements
+### Requirement
 
-```bash
-go get ./...
-```
+- go
+- sqlite3
 
 ### Run
 
 ```bash
-go build
+go get ./...
+go build main.go
 ./main
 ```
